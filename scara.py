@@ -38,6 +38,10 @@ def jacobian(l1, l2, q1, q2):
                   [0, 0, 0, 0],
                   [0, 0, 0, 0],
                   [1, 1, 1, 0]])
+
+def damped_pinv(J, p=0.1):
+  return np.matmul(J.transpose(), np.linalg.inv(np.matmul(J, J.transpose())+(p**2)*np.identity(6)))
+
 print ('Program started')
 sim.simxFinish(-1) # just in case, close all opened connections
 clientID=sim.simxStart('127.0.0.1',19997,True,True,5000,5) # Connect to CoppeliaSim
@@ -97,7 +101,7 @@ if clientID!=-1:
     while np.linalg.norm(Xd-Xm)>= E:
       print(np.linalg.norm(Xd-Xm))
       J = jacobian(l1, l2, joint_pos_1[1], joint_pos_2[1])
-      q_dot = np.dot(np.linalg.pinv(J), Xd-Xm)
+      q_dot = np.matmul(np.linalg.pinv(J), Xd-Xm)
       qm = qm + q_dot*dt
 
       # set positions
