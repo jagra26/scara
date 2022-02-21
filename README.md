@@ -8,5 +8,5 @@ pip install -r requiriments.txt
 Abra a cena no coppeliasim e inicie o programa com:
 
 ```
-python scara.py
+python3 scaraRTB.py
 ```
